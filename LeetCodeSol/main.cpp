@@ -7,9 +7,12 @@
 //
 
 #include <iostream>
-
+#include <string>
+#include "Solution.hpp"
 int main(int argc, const char * argv[]) {
     // insert code here...
-    std::cout << "Hello, World!\n";
+    Solution *ans;
+    double test = ans -> eval("9+(3-1)*3+10/2 + 2.5");
+    std::cout << test;
     return 0;
 }
