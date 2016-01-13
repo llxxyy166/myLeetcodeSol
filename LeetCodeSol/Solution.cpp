@@ -385,9 +385,20 @@ int Solution::romanToInt13(string s) {
     return sum;
 }
 
-//string Solution::intToRoman12(int num) {
-//    
-//}
+string Solution::intToRoman12(int num) {
+    static string list[][9] = {"I" ,"II", "III", "IV", "V", "VI", "VII", "VIII","IX", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM", "M", "MM", "MMM"};
+    string result;
+    int index = 3;
+    for (int i = 1000; i >= 1; i /= 10) {
+        if (num / i) {
+            int res = num / i;
+            result = result + list[index][res - 1];
+            num -= res * i;
+        }
+        index--;
+    }
+    return result;
+}
 
 int Solution::searchInsert35(vector<int> &nums, int target) {
     for (int i = 0; i < nums.size(); i++) {
@@ -465,6 +476,9 @@ double evalSurfix(vector<string> surfix) {
     stack<double> workingStack;
     for (int i = 0; i < surfix.size(); i++) {
         if (surfix[i] == "+" || surfix[i] == "-" || surfix[i] == "*" || surfix[i] == "/") {
+            if (workingStack.size() < 2) {
+                return INT32_MAX;
+            }
             double o1 = workingStack.top();
             workingStack.pop();
             double o2 = workingStack.top();
@@ -492,9 +506,13 @@ double evalSurfix(vector<string> surfix) {
     }
     return workingStack.top();
 }
+
 double Solution::eval(string s) {
     vector<string> suffixExpression;
     stack<string> workingStack;
+    if (!s.size()) {
+        return 0;
+    }
     string number;
     for (int i = 0; i < s.length(); i++) {
         string c(1, s[i]);
@@ -564,4 +582,40 @@ int Solution::countNodes222(TreeNode *root) {
     return countNodes222(root->left) + countNodes222(root->right) + 1;
 }
 
+vector<int> Solution::productExceptSelf238(vector<int> &nums) {
+    vector<int> result;
+    for (int i = 0; i < nums.size(); i++) {
+        if (!i) {
+            result.push_back(1);
+        }
+        else {
+            result.push_back(result[i - 1] * nums[i - 1]);
+        }
+    }
+    int current = 1;
+    for (int i = (int)result.size() - 1; i >= 0; i--) {
+        result[i] *= current;
+        current *= nums[i];
+    }
+    return result;
+}
+
+TreeNode* Solution::lowestCommonAncestor235(TreeNode *root, TreeNode *p, TreeNode *q) {
+    if (!root || !p || !q) {
+        return nullptr;
+    }
+    TreeNode *temp = root;
+    while (temp) {
+        if (p -> val < temp -> val && q -> val < temp -> val) {
+            temp = temp -> left;
+        }
+        else if (p -> val > temp -> val && q -> val > temp -> val) {
+            temp = temp -> right;
+        }
+        else {
+            break;
+        }
+    }
+    return temp;
+}
 

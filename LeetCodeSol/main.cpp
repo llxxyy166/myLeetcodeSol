@@ -12,7 +12,9 @@
 int main(int argc, const char * argv[]) {
     // insert code here...
     Solution *ans;
-    double test = ans -> eval("9+(3-1)*3+10/2 + 2.5");
-    std::cout << test;
+    int a[4] = {1,3,2,4};
+    std::vector<int> v(a, a + 4);
+    std::vector<int> test = ans -> productExceptSelf238(v);
+    std::cout << test[2];
     return 0;
 }

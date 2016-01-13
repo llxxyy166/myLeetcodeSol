@@ -88,6 +88,10 @@ public:
     double eval(std::string s); //29, 30 (224 and 227)
                                 //imporved can process parenthese， +，-，*，/ and double number
     int countNodes222(TreeNode* root); // 31
+    
+    std::vector<int> productExceptSelf238(std::vector<int> &nums); //32
+    
+    TreeNode* lowestCommonAncestor235(TreeNode* root, TreeNode* p, TreeNode* q); //33
 };
 
 #endif /* Solution_hpp */
