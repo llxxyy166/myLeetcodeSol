@@ -213,14 +213,22 @@
 		394D108F1C41EA9300B24091 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				HEADER_SEARCH_PATHS = "";
+				OTHER_CFLAGS = "";
+				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = /Users/xinyelei/ompi/include;
 			};
 			name = Debug;
 		};
 		394D10901C41EA9300B24091 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				HEADER_SEARCH_PATHS = "";
+				OTHER_CFLAGS = "";
+				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = /Users/xinyelei/ompi/include;
 			};
 			name = Release;
 		};
@@ -243,6 +251,7 @@
 				394D10901C41EA9300B24091 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

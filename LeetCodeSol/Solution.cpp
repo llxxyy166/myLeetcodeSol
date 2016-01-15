@@ -12,6 +12,7 @@
 #include <cmath>
 #include <stack>
 #include <cctype>
+
 using namespace std;
 
 bool Solution:: canWinNim292(int n) {
@@ -619,3 +620,73 @@ TreeNode* Solution::lowestCommonAncestor235(TreeNode *root, TreeNode *p, TreeNod
     return temp;
 }
 
+vector<int> Solution::preorderTraversal144(TreeNode* root) {
+    stack<TreeNode *> workingStack;
+    vector<int> result;
+    if (root) {
+        workingStack.push(root);
+    }
+    while (!workingStack.empty()) {
+        TreeNode *top = workingStack.top();
+        workingStack.pop();
+        result.push_back(top -> val);
+        if (top -> right) {
+            workingStack.push(top -> right);
+        }
+        if (top -> left) {
+            workingStack.push(top -> left);
+        }
+    }
+    return result;
+}
+
+vector<int> Solution::inorderTraversal94(TreeNode *root) {
+    stack<TreeNode *> workingStack;
+    vector<int> result;
+    TreeNode *temp = root;
+    while (temp || workingStack.size()) {
+        while (temp) {
+            workingStack.push(temp);
+            temp = temp -> left;
+        }
+        if (workingStack.size()) {
+            temp =workingStack.top();
+            workingStack.pop();
+            result.push_back(temp -> val);
+        }
+        temp = temp -> right;
+    }
+    return result;
+}
+
+vector<int> Solution::postorderTraversal145(TreeNode *root) {
+    struct TreeNodeWithMark {
+        TreeNode *tree;
+        int mark;
+    };
+    stack<TreeNodeWithMark> workingStack;
+    vector<int> result;
+    TreeNode *temp = root;
+    while (temp || workingStack.size()) {
+        while (temp) {
+            TreeNodeWithMark current;
+            current.tree = temp;
+            current.mark = 1;
+            workingStack.push(current);
+            temp = temp -> left;
+        }
+        if (workingStack.size()) {
+            TreeNodeWithMark top = workingStack.top();
+            workingStack.pop();
+            if (top.mark == 1) {
+                top.mark = 2;
+                workingStack.push(top);
+                temp = top.tree -> right;
+            }
+            else {
+                result.push_back(top.tree -> val);
+            }
+        }
+    }
+    return result;
+}

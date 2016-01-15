@@ -92,6 +92,12 @@ public:
     std::vector<int> productExceptSelf238(std::vector<int> &nums); //32
     
     TreeNode* lowestCommonAncestor235(TreeNode* root, TreeNode* p, TreeNode* q); //33
+    
+    std::vector<int> preorderTraversal144(TreeNode* root); //34
+    
+    std::vector<int> inorderTraversal94(TreeNode* root); //35
+    
+    std::vector<int> postorderTraversal145(TreeNode* root); //36
 };
 
 #endif /* Solution_hpp */
