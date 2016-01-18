@@ -98,6 +98,19 @@ public:
     std::vector<int> inorderTraversal94(TreeNode* root); //35
     
     std::vector<int> postorderTraversal145(TreeNode* root); //36
+    
+    std::vector<int> twoSum(std::vector<int> &nums, int target); //37
+    
+    ListNode* oddEvenList328(ListNode* head); //37
+    
+    void sortColors75(std::vector<int>& nums); //38
+    
+    ListNode* swapPairs24(ListNode* head); //39
+    
+    int climbStairs79(int n); //40 (Fibonacci)
+    
+    int totalNQueens52(int n); //41. Not implemented, refer to 42 where the sol number is also stored
+    
+    std::vector<std::vector<std::string>> solveNQueens51(int n); //42
 };
-
 #endif /* Solution_hpp */

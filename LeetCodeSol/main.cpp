@@ -12,9 +12,14 @@
 int main(int argc, const char * argv[]) {
     // insert code here...
     Solution *ans;
-    int a[4] = {1,3,2,4};
-    std::vector<int> v(a, a + 4);
-    std::vector<int> test = ans -> productExceptSelf238(v);
-    std::cout << test[2];
+//    int a[4] = {1,3,2,4};
+//    std::vector<int> v(a, a + 4);
+//    std::vector<int> test = ans -> twoSum(v, 5);
+//    for (int i = 0; i < 2; i++) {
+//        std::cout << test[i];
+//    }
+//    std::cout << std::endl;
+    int a = ans->totalNQueens52(10);
+    std::cout << a;
     return 0;
 }

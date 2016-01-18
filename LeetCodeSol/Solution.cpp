@@ -690,3 +690,160 @@ vector<int> Solution::postorderTraversal145(TreeNode *root) {
     }
     return result;
 }
+
+
+vector<int> Solution::twoSum(vector<int> &nums, int target) {
+    vector<int> sortedNums = nums;
+    vector<int> result;
+    sort(sortedNums.begin(), sortedNums.end());
+    int begin = 0, end = (int)nums.size() - 1;
+    while (begin < end) {
+        if (sortedNums[begin] + sortedNums[end] == target) {
+            for (int i = 0; i < nums.size(); i++) {
+                if (result.size() == 2) {
+                    begin = (int)nums.size() - 1;
+                    end = 0;
+                    break;
+                }
+                if (nums[i] == sortedNums[begin] || nums[i] == sortedNums[end]) {
+                    result.push_back(i + 1);
+                }
+            }
+        }
+        else if (sortedNums[begin] + sortedNums[end] > target) {
+            end--;
+        }
+        else {
+            begin++;
+        }
+    }
+    return result;
+}
+
+ListNode* Solution::oddEvenList328(ListNode *head) {
+    if (!head) {
+        return nullptr;
+    }
+    ListNode *oddP = head;
+    ListNode *evenP = head -> next;
+    ListNode *evenH = evenP;
+    while (oddP -> next && evenP -> next) {
+        oddP -> next = evenP -> next;
+        if (oddP -> next) {
+            evenP -> next = oddP -> next -> next;
+        }
+        oddP = oddP -> next;
+        evenP = evenP -> next;
+    }
+    oddP -> next = evenH;
+    return  head;
+}
+
+void Solution::sortColors75(vector<int> &nums) {
+    if (nums.empty()) {
+        return;
+    }
+    int a[3] = {0};
+    for (int i = 0; i < nums.size(); i++) {
+        a[nums[i]]++;
+    }
+    for (int i = 0; i < a[0]; i++) {
+        nums[i] = 0;
+    }
+    for (int i = a[0]; i < a[0] + a[1]; i++) {
+        nums[i] = 1;
+    }
+    for (int i = a[0] + a[1]; i < nums.size(); i++) {
+        nums[i] = 2;
+    }
+
+}
+
+ListNode* Solution::swapPairs24(ListNode *head) {
+    if (!head || !head -> next) {
+        return head;
+    }
+    else {
+        ListNode *newHead = head -> next;
+        ListNode *nextRec = newHead -> next;
+        newHead -> next = head;
+        head -> next = swapPairs24(nextRec);
+        return newHead;
+    }
+}
+
+int Solution::climbStairs79(int n) {
+    if (n == 1 || n == 2) return n;
+    int pre1 = 2, pre2 = 1;
+    int current = 0;
+    for (int i = 3; i <= n; i++) {
+        current = pre1 + pre2;
+        pre2 = pre1;
+        pre1 = current;
+    }
+    return current;
+}
+
+//********************************************************************************************//
+struct configuration {
+    int num;
+    int currentRow;
+    vector<int> result;
+    int resNum;
+    vector<vector<string>> board;
+};
+
+vector<string> draw(vector<int> config) {
+    vector<string> res;
+    for (int i = 0; i < config.size(); i++) {
+        string row;
+        for (int j = 0; j < config.size(); j++) {
+            if (config[i] == j) {
+                row += "Q";
+            }
+            else {
+                row += ".";
+            }
+        }
+        res.push_back(row);
+    }
+    return res;
+}
+
+void track(configuration &config) {
+    int row = config.currentRow;
+    if (config.currentRow == config.num) {
+        config.resNum++;
+        vector<string> res = draw(config.result);
+        config.board.push_back(res);
+        return;
+    }
+    for (int i = 0; i < config.num; i++) {
+        config.result[row] = i;
+        int flag = 0;
+        for (int j = 0; j < row; j++) {
+            if (config.result[j] == config.result[row] || config.result[j] - config.result[row] == j - row || config.result[j] - config.result[row] == row - j) {
+                flag = 1;
+                break;
+            }
+        }
+        if (!flag) {
+            config.currentRow++;
+            track(config);
+            config.currentRow--;
+        }
+    }
+}
+
+vector<vector<string>> Solution::solveNQueens51(int n) {
+    configuration config;
+    config.num = n;
+    config.currentRow = 0;
+    config.resNum = 0;
+    for (int i = 0; i < n; i++) {
+        config.result.push_back(0);
+    }
+    track(config);
+    return config.board;
+}
+//********************************************************************************************//
