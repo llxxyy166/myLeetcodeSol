@@ -12,7 +12,9 @@
 #include <iostream>
 #include <vector>
 #include <string>
-
+#include <queue>
+#include <stack>
+#include <map>
 struct TreeNode {       // Binary Tree Node
     int val;
     TreeNode *left;
@@ -112,5 +114,58 @@ public:
     int totalNQueens52(int n); //41. Not implemented, refer to 42 where the sol number is also stored
     
     std::vector<std::vector<std::string>> solveNQueens51(int n); //42
+    
+    class MedianFinder { //43
+    public:
+        void addNum(int num);
+        double findMedian();
+        std::priority_queue<int, std::vector<int>, std::less<int>> small;
+        std::priority_queue<int, std::vector<int>, std::greater<int>> large;
+    };
+    MedianFinder mf295;
+    
+    std::string getHint299(std::string secret, std::string guess); //44
+    
+    std::vector<std::string> binaryTreePaths257(TreeNode* root); //45
+    
+    std::vector<std::vector<int>> permute46(std::vector<int>& nums); //46
+    
+    int trailingZeroes172(int n); //47
+    
+    ListNode* insertionSortList147(ListNode* head); //48
+    
+    std::vector<std::vector<int>> generateMatrix59(int n); //49
+    
+    class MinStack {  //50
+    public:
+        void push(int x);
+        void pop();
+        int top();
+        int getMin();
+    private:
+        std::stack<std::pair<int, int>> workingStack;
+    };
+    MinStack ms155;
+    
+    ListNode *getIntersectionNode160(ListNode *headA, ListNode *headB);//51
+    
+    bool exist79(std::vector<std::vector<char>> &board, std::string word); //52
+    
+    class TrieNode { //53
+    public:
+        bool isWord;
+        std::map<char, TrieNode *> children;
+    };
+    class Trie {
+    public:
+        Trie() {
+            root = new TrieNode;
+        }
+        void insert(std::string word);
+        bool search(std::string word);
+        bool startsWith(std::string prefix);
+    private:TrieNode *root;
+    };
+    Trie tr208;
 };
 #endif /* Solution_hpp */

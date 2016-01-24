@@ -12,6 +12,9 @@
 #include <cmath>
 #include <stack>
 #include <cctype>
+#include <sstream>
+#include <map>
+#include <unordered_set>
 
 using namespace std;
 
@@ -847,3 +850,384 @@ vector<vector<string>> Solution::solveNQueens51(int n) {
     return config.board;
 }
 //********************************************************************************************//
+
+void Solution::MedianFinder::addNum(int num) {
+    if (small.empty() || num < small.top()) {
+        small.push(num);
+    }
+    else {
+        large.push(num);
+    }
+    if ((int)small.size() - (int)large.size() > 1) {
+        int n = small.top();
+        small.pop();
+        large.push(n);
+    }
+    if ((int)large.size() - (int)small.size() > 1) {
+        int n = large.top();
+        large.pop();
+        small.push(n);
+    }
+}
+
+double Solution::MedianFinder::findMedian() {
+    int size = (int)small.size() + (int)large.size();
+    if (size % 2 != 0) {
+        return small.size() > large.size() ? small.top() : large.top();
+    }
+    return (double)(small.top() + large.top()) / 2;
+}
+
+string Solution::getHint299(string secret, string guess) {
+    int bull = 0, cow = 0;
+    map<char, int> maps;
+    for (int i = 0; i < secret.size(); i++) {
+        if (maps.find(secret[i]) == maps.end()) {
+            maps.insert(pair<char, int> (secret[i], 1));
+        }
+        else {
+            maps[secret[i]]++;
+        }
+    }
+    for (int i = 0; i < secret.length(); i++) {
+        if (secret[i] == guess[i]) {
+            bull++;
+            maps[secret[i]]--;
+        }
+    }
+    for (int i = 0; i < guess.length(); i++) {
+        if (maps.find(guess[i]) != maps.end()) {
+            if (maps[guess[i]] && guess[i] != secret[i]) {
+                cow++;
+                maps[guess[i]]--;
+            }
+        }
+    }
+    stringstream rest;
+    rest << bull << "A" << cow << "B";
+    return rest.str();
+}
+
+void DFS(TreeNode *node, string &path, vector<string> &res) {
+    stringstream val;
+    val << node -> val << "->";
+    path += val.str();
+    if (!node -> left && !node -> right) {
+        path.erase(path.end() - 2, path.end());
+        res.push_back(path);
+        if (path.length() > 3) {
+            while (path[path.length() - 1] != '>') {
+                path.erase(path.end() - 1);
+            }
+        }
+        return;
+    }
+    if (node -> left) {
+        DFS(node -> left, path, res);
+    }
+    if (node -> right) {
+        DFS(node -> right, path, res);
+    }
+    path.erase(path.end() - 2, path.end());
+    if (path.length() > 3) {
+        while (path[path.length() - 1] != '>') {
+            path.erase(path.end() - 1);
+        }
+    }
+    return;
+}
+
+vector<string> Solution::binaryTreePaths257(TreeNode *root) {
+    vector<string> res;
+    if (!root) {
+        return res;
+    }
+    string path;
+    DFS(root, path, res);
+    return res;
+}
+
+void TrackPermute(vector<int> &nums, map<int, int> &count, vector<int> &permute, vector<vector<int>> &res) {
+    if (permute.size() == nums.size()) {
+        res.push_back(permute);
+        return;
+    }
+    for (int i = 0; i < nums.size(); i++) {
+        if (count[nums[i]]) {
+            count[nums[i]]--;
+            permute.push_back(nums[i]);
+            TrackPermute(nums, count, permute, res);
+            permute.pop_back();
+            count[nums[i]]++;
+        }
+    }
+}
+
+vector<vector<int>> Solution::permute46(vector<int> &nums) {
+    vector<vector<int>> res;
+    map<int, int> count;
+    for (int i = 0; i < nums.size(); i++) {
+        count.insert(pair<int, int> (nums[i], 1));
+    }
+    vector<int> permute;
+    TrackPermute(nums, count, permute, res);
+    return res;
+}
+
+int Solution::trailingZeroes172(int n) {
+    int res = 0;
+    while (n / 5) {
+        n /= 5;
+        res += n;
+    }
+    return res;
+}
+
+ListNode* Solution::insertionSortList147(ListNode *head) {
+    if (!head) {
+        return nullptr;
+    }
+    ListNode *newHead = head;
+    ListNode *temp = head -> next;
+    newHead->next = nullptr;
+    while (temp) {
+        ListNode *op = temp;
+        temp = temp -> next;
+        ListNode *newListTemp = newHead;
+        while (newListTemp) {
+            if (newListTemp -> val <= op -> val && (newListTemp -> next == nullptr || newListTemp -> next ->val > op -> val)) {
+                op -> next = newListTemp -> next;
+                newListTemp -> next = op;
+                break;
+            }
+            else if (newListTemp -> val > op -> val) {
+                op -> next = newListTemp;
+                newHead = op;
+                break;
+            }
+            else {
+                newListTemp = newListTemp -> next;
+            }
+        }
+    }
+    return newHead;
+}
+
+vector<vector<int>> Solution::generateMatrix59(int n) {
+    int matrix[n][n];
+    int mark[n][n];
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            mark[i][j] = 0;
+        }
+    }
+    int row = 0, column = 0;
+    string flag = "right";
+    for (int i = 1; i <= n * n; i++) {
+        matrix[row][column] = i;
+        mark[row][column] = 1;
+        if (flag == "right") {
+            column++;
+        }
+        if (flag == "left") {
+            column--;
+        }
+        if (flag == "up") {
+            row--;
+        }
+        if (flag == "down") {
+            row++;
+        }
+        if (flag == "right" && (column == n - 1 || mark[row][column + 1])) {
+            flag = "down";
+        }
+        if (flag == "down" && (row == n - 1|| mark[row + 1][column])) {
+            flag = "left";
+        }
+        if (flag == "left" && (column == 0 || mark[row][column - 1])) {
+            flag = "up";
+        }
+        if (flag == "up" && (row == 0 || mark[row - 1][column])) {
+            flag = "right";
+        }
+    }
+    vector<vector<int>> res;
+    for (int i = 0; i < n; i++) {
+        vector<int> row(matrix[i], matrix[i] + n);
+        res.push_back(row);
+    }
+    return res;
+}
+
+void Solution::MinStack::push(int x) {
+    int min = workingStack.empty() ? x : std::min(workingStack.top().second, x);
+    workingStack.push(std::make_pair(x, min));
+}
+
+void Solution::MinStack::pop() {
+    workingStack.pop();
+}
+
+int Solution::MinStack::top() {
+    return workingStack.top().first;
+}
+
+int Solution::MinStack::getMin() {
+    return workingStack.top().second;
+}
+
+ListNode* Solution::getIntersectionNode160(ListNode *headA, ListNode *headB) {
+    if (!headA || !headB) {
+        return nullptr;
+    }
+//    unordered_set<ListNode *> set;
+//    for (ListNode *temp = headA; temp; temp = temp -> next) {
+//        set.insert(temp);
+//    }
+//    for (ListNode *temp = headB; temp; temp = temp -> next) {
+//        if (set.find(temp) != set.end()) {
+//            return temp;
+//        }
+//    }
+//    return nullptr;
+    ListNode *A = headA, *B = headB;
+    while (A && B) {
+        if (A == B) {
+            return A;
+        }
+        A = A -> next;
+        B= B -> next;
+        if (A == B) {
+            return nullptr;
+        }
+        if (!A) {
+            A = headB;
+        }
+        if (!B) {
+            B = headA;
+        }
+    }
+    return A;
+}
+
+struct configurationForFindingWord {
+    bool find;
+    int maxRow;
+    int maxColumn;
+    int currentBoardRow;
+    int currentBoardColumn;
+    int currentStringIndex;
+    int maxStringIndex;
+    vector<vector<int>> mark;
+};
+
+void findWord(vector<vector<char>> &board, string word, configurationForFindingWord &config) {
+    if (config.currentStringIndex == config.maxStringIndex) {
+        config.find = true;
+    }
+    if (config.find) {
+        return;
+    }
+    if (config.currentBoardRow > config.maxRow - 1 || config.currentBoardRow < 0) {
+        return;
+    }
+    if (config.currentBoardColumn > config.maxColumn - 1 || config.currentBoardColumn < 0) {
+        return;
+    }
+    int row = config.currentBoardRow;
+    int column = config.currentBoardColumn;
+    if (board[row][column] == word[config.currentStringIndex] && !config.mark[row][column]) {
+        config.mark[row][column] = 1;
+        config.currentStringIndex++;
+        
+        config.currentBoardRow++;
+        findWord(board, word, config);
+        config.currentBoardRow--;
+        
+        config.currentBoardRow--;
+        findWord(board, word, config);
+        config.currentBoardRow++;
+        
+        config.currentBoardColumn++;
+        findWord(board, word, config);
+        config.currentBoardColumn--;
+        
+        config.currentBoardColumn--;
+        findWord(board, word, config);
+        config.currentBoardColumn++;
+        
+        config.mark[row][column] = 0;
+        config.currentStringIndex--;
+    }
+    return;
+}
+
+bool Solution::exist79(vector<vector<char>> &board, string word) {
+    configurationForFindingWord config;
+    config.find = false;
+    config.maxRow = (int)board.size();
+    config.maxColumn = (int)board[0].size();
+    config.currentStringIndex = 0;
+    config.maxStringIndex = (int)word.size();
+    for (int i = 0; i < config.maxRow; i++) {
+        vector<int> a;
+        for (int j = 0; j < config.maxColumn; j++) {
+            a.push_back(0);
+        }
+        config.mark.push_back(a);
+    }
+    for (int i = 0; i < board.size(); i++) {
+        for (int j = 0; j < board[i].size(); j++) {
+            config.currentBoardRow = i;
+            config.currentBoardColumn = j;
+            findWord(board, word, config);
+        }
+    }
+    return config.find;
+}
+
+void Solution::Trie::insert(string word) {
+    TrieNode *temp = root;
+    for (int i = 0; i < word.length(); i++) {
+        if (!temp -> children.count(word[i])) {
+            TrieNode *newNode = new TrieNode;
+            newNode -> isWord = false;
+            temp -> children[word[i]] = newNode;
+        }
+        temp = temp -> children[word[i]];
+    }
+    temp -> isWord = true;
+}
+bool Solution::Trie::search(string word) {
+    TrieNode *temp = root;
+    int i = 0;
+    while (temp && i < word.length()) {
+        if (!temp -> children.count(word[i])) {
+            return false;
+        }
+        temp = temp -> children[word[i]];
+        i++;
+    }
+    if (!temp -> isWord) {
+        return false;
+    }
+    return true;
+}
+bool Solution::Trie::startsWith(string prefix) {
+    TrieNode *temp = root;
+    int i = 0;
+    while (temp && i < prefix.length()) {
+        if (!temp -> children.count(prefix[i])) {
+            return false;
+        }
+        temp = temp -> children[prefix[i]];
+        i++;
+    }
+    return true;
+}
+
+
+
+
+
+
