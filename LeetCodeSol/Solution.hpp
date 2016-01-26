@@ -167,5 +167,19 @@ public:
     private:TrieNode *root;
     };
     Trie tr208;
+    
+    std::vector<int> plusOne66(std::vector<int> &digits); //54
+    
+    int minimumTotal120(std::vector<std::vector<int>> &triangle); //55
+    
+    std::vector<int> getRow119(int rowIndex); //56
+    
+    std::vector<std::vector<int>> generate118(int numRows); //57
+    
+    bool isPalindrome125(std::string s); //58
+    
+    int coinChange(std::vector<int>& coins, int amount); //59
+    
+    int compareVersion165(std::string version1, std::string version2); //60
 };
 #endif /* Solution_hpp */

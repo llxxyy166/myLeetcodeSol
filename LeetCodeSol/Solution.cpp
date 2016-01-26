@@ -1098,7 +1098,7 @@ ListNode* Solution::getIntersectionNode160(ListNode *headA, ListNode *headB) {
         A = A -> next;
         B= B -> next;
         if (A == B) {
-            return nullptr;
+            return A;
         }
         if (!A) {
             A = headB;
@@ -1226,8 +1226,182 @@ bool Solution::Trie::startsWith(string prefix) {
     return true;
 }
 
+vector<int> Solution::plusOne66(vector<int> &digits) {
+    int index = (int)digits.size() - 1;
+    while (index >= 0) {
+        if (digits[index] == 9) {
+            digits[index] = 0;
+            index--;
+        }
+        else {
+            digits[index]++;
+            break;
+        }
+    }
+    if (index == -1) {
+        digits.emplace(digits.begin(), 1);
+    }
+    return digits;
+}
+
+int Solution::minimumTotal120(vector<vector<int>> &triangle) {
+    vector<int> M;
+    M.push_back(triangle[0][0]);
+    for (int i = 1; i < triangle.size(); i++) {
+        for (int j = (int)triangle[i].size() - 1; j >= 0; j--) {
+            if (j == 0) {
+                M[0] = M[0] + triangle[i][j];
+            }
+            else if (j == triangle[i].size()) {
+                M.push_back(M[M.size() - 1] + triangle[i][j]);
+            }
+            else {
+                int min = std::min(M[j], M[j - 1]);
+                M[j] = min + triangle[i][j];
+            }
+        }
+    }
+    return *min_element(M.begin(), M.end());
+}
+
+vector<int> Solution::getRow119(int rowIndex) {
+    vector<int> res;
+    res.push_back(1);
+    for (int i = 1; i <= rowIndex; i++) {
+        for (int j = i; j > 0; j--) {
+            if (!j) {
+                res[j] = 1;
+            }
+            else {
+                res[j] = res[j] + res[j - 1];
+            }
+        }
+        res.push_back(1);
+    }
+    return res;
+}
+
+vector<vector<int>> Solution::generate118(int numRows) {
+    vector<vector<int>> res;
+    for (int i = 0; i <numRows; i++) {
+        vector<int> row;
+        if (!i) {
+            row.push_back(1);
+        }
+        else{
+            for (int j = 0; j <= i; j++) {
+                if (j == 0 || j == i) {
+                    row.push_back(1);
+                }
+                else {
+                    row.push_back(res[i - 1][j] + res[i - 1][j - 1]);
+                }
+            }
+        }
+        res.push_back(row);
+    }
+    return res;
+}
+
+bool Solution::isPalindrome125(string s) {
+    if (s.empty()) {
+        return true;
+    }
+    int i = 0, j = (int)s.length() - 1;
+    while (i < j) {
+        while (!isalnum(s[i]) && i < j) {
+            i++;
+        }
+        while (!isalnum(s[j]) && i < j) {
+            j--;
+        }
+        char a = toupper(s[i]);
+        char b = toupper(s[j]);
+        if (a != b) {
+            return false;
+        }
+        i++, j--;
+    }
+    return true;
+}
 
 
+int Solution::coinChange(vector<int> &coins, int amount) {
+    vector<int> a(amount + 1, INT32_MAX);
+    sort(coins.begin(), coins.end());
+    a[0] = 0;
+    for (int i = 1; i <= amount; i++) {
+        int minimum = INT32_MAX;
+        for (int j = 0; j < coins.size(); j++) {
+            if (i < coins[j]) {
+                continue;
+            }
+            if (coins[j] == i) {
+                a[i] = 1;
+                minimum = a[i];
+                break;
+            }
+            if (a[i - coins[j]] != -1) {
+                minimum = a[i - coins[j]] + 1 < minimum ? a[i - coins[j]] + 1 : minimum;
+            }
+        }
+        a[i] = minimum == INT32_MAX ? -1 : minimum;
+    }
+    return a[amount] == INT32_MAX ? -1 : a[amount];
+}
+
+int Solution::compareVersion165(string version1, string version2) {
+    vector<int> split1;
+    vector<int> split2;
+    size_t pos = 0;
+    while (pos != string::npos) {
+        pos = version1.find('.');
+        string head = version1.substr(0, pos);
+        string tail = version1.substr(pos + 1);
+        split1.push_back(stoi(head));
+        version1 = tail;
+    }
+    pos = 0;
+    while (pos != string::npos) {
+        pos = version2.find('.');
+        string head = version2.substr(0, pos);
+        string tail = version2.substr(pos + 1);
+        split2.push_back(stoi(head));
+        version2 = tail;
+    }
+    int i = 0;
+    while (i < split1.size() || i < split2.size()) {
+        if (i < split1.size() && i < split2.size()) {
+            if (split1[i] > split2[i]) {
+                return 1;
+            }
+            if (split1[i] < split2[i]) {
+                return -1;
+            }
+            i++;
+            continue;
+        }
+        if (i < split1.size()) {
+            int j = i;
+            while (j < split1.size()) {
+                if (split1[j]) {
+                    return 1;
+                }
+            }
+            return 0;
+        }
+        if (i < split2.size()) {
+            int j = i;
+            while (j < split2.size()) {
+                if (split2[j]) {
+                    return -1;
+                }
+            }
+        }
+        return 0;
+    }
+    return 0;
+}
 
 
 
