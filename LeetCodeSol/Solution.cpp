@@ -1403,5 +1403,184 @@ int Solution::compareVersion165(string version1, string version2) {
     return 0;
 }
 
+bool Solution::isPowerOfThree326(int n) {
+    double power = log(n) / log(3);
+    cout << (double)(int)(power+0.1);
+    if (fabs(power - (int)(power+0.6)) < 1e-10) {
+        return true;
+    }
+    return false;
+}
 
+bool isBadVersion(int version) {
+    if (version > 1702766179) {
+        return true;
+    }
+    return false;
+}
+int Solution::firstBadVersion278(int n) {
+    int left = 1, right = n;
+    int mid = (double)left / 2 + (double)right / 2;
+    while (mid != left && mid != right) {
+        if (isBadVersion(mid)) {
+            right = mid;
+            mid = (double)mid / 2 + (double)left / 2;
+        }
+        else {
+            left = mid;
+            mid = (double)mid / 2 + (double)right / 2;
+        }
+            
+    }
+    return isBadVersion(mid) ? mid : mid + 1;
+}
+
+ListNode* Solution::addTwoNumbers2(ListNode *l1, ListNode *l2) {
+    ListNode *t1 = l1, *t2 = l2;
+    int carry = 0;
+    int headflag = 1;
+    ListNode *newHead = nullptr;
+    ListNode *current = nullptr;
+    while (t1 || t2) {
+        int a = 0, b = 0;
+        if (t1) {
+            a = t1 -> val;
+            t1 = t1 -> next;
+        }
+        if (t2) {
+            b = t2 -> val;
+            t2 = t2 -> next;
+        }
+        int sum = a + b + carry;
+        if (sum >= 10) {
+            sum -= 10;
+            carry = 1;
+        }
+        else {
+            carry = 0;
+        }
+        ListNode *newNode = new ListNode(sum);
+        if (headflag) {
+            newHead = newNode;
+            headflag = 0;
+        }
+        else {
+            current -> next = newNode;
+        }
+        current = newNode;
+    }
+    if (carry) {
+        ListNode *newNode = new ListNode(1);
+        current -> next = newNode;
+        current = current -> next;
+    }
+    current -> next = nullptr;
+    return newHead;
+}
+
+int Solution::search33(vector<int> &nums, int target) {
+    int left = 0, right = (int)nums.size() - 1;
+    int pivot = (double)left / 2 + (double)right / 2;
+    while (pivot != left && pivot != right) {
+        if (nums[pivot] > nums[right]) {
+            left = pivot;
+            pivot = (double)left / 2 + (double)right / 2;
+        }
+        else {
+            right = pivot;
+            pivot = (double)left / 2 + (double)right / 2;
+        }
+    }
+    left = 0, right = pivot;
+    int mid = double(left) / 2 + (double)right / 2;
+    while (mid != left && mid != right) {
+        if (nums[mid] > target) {
+            right = mid;
+            mid = (double)right / 2 + (double)left / 2;
+        }
+        else if (nums[mid] < target) {
+            left = mid;
+            mid = (double)left / 2 + (double)right / 2;
+        }
+        else {
+            return mid;
+        }
+    }
+    if (nums[mid] == target) {
+        return mid;
+    }
+    if (nums[mid + 1] == target && mid + 1 < nums.size()) {
+        return mid + 1;
+    }
+    left = pivot + 1, right = (int)nums.size() - 1;
+    mid = double(left) / 2 + (double)right / 2;
+    while (mid != left && mid != right) {
+        if (nums[mid] > target) {
+            right = mid;
+            mid = (double)right / 2 + (double)left / 2;
+        }
+        else if (nums[mid] < target) {
+            left = mid;
+            mid = (double)left / 2 + (double)right / 2;
+        }
+        else {
+            return mid;
+        }
+    }
+    if (nums[mid] == target) {
+        return mid;
+    }
+    if (nums[mid + 1] == target && mid + 1 < nums.size()) {
+        return mid + 1;
+    }
+    return -1;
+}
+
+void Solution::rotate189(vector<int> &nums, int k) {
+    int num = k % nums.size();
+    reverse(nums.begin(), nums.begin() + nums.size() - num);
+    reverse(nums.begin() + nums.size() - num, nums.end());
+    reverse(nums.begin(), nums.end());
+}
+
+struct configuration39 {
+    int target;
+    int currentIndex;
+    int currentSum;
+    vector<int> currentSol;
+    vector<vector<int>> res;
+};
+
+void search39(vector<int> &candidate, configuration39 &config) {
+    if (config.currentSum == config.target) {
+        config.res.push_back(config.currentSol);
+        return;
+    }
+    if (config.currentSum == config.target) {
+        config.res.push_back(config.currentSol);
+    }
+    for (int i = 0; i < candidate.size(); i++) {
+        if (config.currentSol.size() && candidate[i] < config.currentSol[config.currentSol.size() - 1]) {
+            continue;
+        }
+        if (config.currentSum + candidate[i] > config.target) {
+            continue;
+        }
+        config.currentSum += candidate[i];
+        config.currentSol.push_back(candidate[i]);
+        search39(candidate, config);
+        config.currentSum -= candidate[i];
+        config.currentSol.pop_back();
+    }
+    return;
+}
+
+vector<vector<int>> Solution::combinationSum39(vector<int> &candidates, int target) {
+    configuration39 config;
+    config.target = target;
+    config.currentSum = 0;
+    config.currentIndex = 0;
+    search39(candidates, config);
+    return config.res;
+}
 

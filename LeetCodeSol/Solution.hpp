@@ -181,5 +181,17 @@ public:
     int coinChange(std::vector<int>& coins, int amount); //59
     
     int compareVersion165(std::string version1, std::string version2); //60
+    
+    bool isPowerOfThree326(int n); //61
+    
+    int firstBadVersion278(int n); //62
+    
+    ListNode* addTwoNumbers2(ListNode* l1, ListNode* l2); //63
+    
+    int search33(std::vector<int> &nums, int target); //64
+    
+    void rotate189(std::vector<int> &nums, int k); //65
+    
+    std::vector<std::vector<int>> combinationSum39(std::vector<int> &candidates, int target);
 };
 #endif /* Solution_hpp */
