@@ -1584,3 +1584,92 @@ vector<vector<int>> Solution::combinationSum39(vector<int> &candidates, int targ
     return config.res;
 }
 
+bool Solution::searchMatrix74(vector<vector<int> > &matrix, int target) {
+    int maxSize = (int)matrix.size() * (int)matrix[0].size();
+    int left = 0, right = maxSize - 1;
+    int mid = (double)left / 2 + (double)right / 2;
+    while (left <= right) {
+        int row = mid / matrix[0].size();
+        int column = mid % matrix[0].size();
+        if (matrix[row][column] == target) {
+            return true;
+        }
+        if (matrix[row][column] < target) {
+            left = mid + 1;
+            mid = (double)left / 2 + (double)right / 2;
+        }
+        else {
+            right = mid - 1;
+            mid = (double)left / 2 + (double)right / 2;
+        }
+    }
+    return false;
+}
+
+int Solution::findMin153(vector<int> &nums) {
+    int left = 0, right = (int)nums.size() - 1;
+    int mid = (double)left / 2 + (double)right / 2;
+    while (left < right) {
+        if (nums[mid] >= nums[left]) {
+            if (nums[mid + 1] < nums[mid]) {
+                return nums[mid + 1];
+            }
+            left = mid + 1;
+            mid = (double)left / 2 + (double)right / 2;
+        }
+        else {
+            if (nums[mid - 1]  > nums[mid]) {
+                return nums[mid];
+            }
+            right = mid - 1;
+            mid = (double)left / 2 + (double)right / 2;
+        }
+    }
+    return nums[0];
+}
+
+int Solution::minPathSum64(vector<vector<int> > &grid) {
+    int row = (int)grid.size();
+    int column = (int)grid[0].size();
+    int solMatrix[row][column];
+    for (int i = 0; i < grid.size(); i++) {
+        for (int j = 0; j < grid[i].size(); j++) {
+            if (!i && !j) {
+                solMatrix[i][j] = grid[i][j];
+            }
+            else if (!i) {
+                solMatrix[i][j] = solMatrix[i][j - 1] + grid[i][j];
+            }
+            else if (!j) {
+                solMatrix[i][j] = solMatrix[i - 1][j] + grid[i][j];
+            }
+            else {
+                int smaller = min(solMatrix[i - 1][j], solMatrix[i][j - 1]);
+                solMatrix[i][j] = smaller + grid[i][j];
+            }
+        }
+    }
+    return solMatrix[row - 1][column - 1];
+}
+
+int Solution::lengthOfLastWord58(string s) {
+    if (s.empty()) {
+        return 0;
+    }
+    int last = (int)s.size() - 1;
+    int length = 0;
+    int index;
+    for (index = last; index >= 0; index--) {
+        if (isalpha(s[index])) {
+            break;
+        }
+    }
+    for (int i = index; i >= 0; i--) {
+        if (isspace(s[i])) {
+            break;
+        }
+        length++;
+    }
+    return length;
+}
+

@@ -192,6 +192,14 @@ public:
     
     void rotate189(std::vector<int> &nums, int k); //65
     
-    std::vector<std::vector<int>> combinationSum39(std::vector<int> &candidates, int target);
+    std::vector<std::vector<int>> combinationSum39(std::vector<int> &candidates, int target); //66
+    
+    bool searchMatrix74(std::vector<std::vector<int>>& matrix, int target); //67
+    
+    int findMin153(std::vector<int> &nums); //68
+    
+    int minPathSum64(std::vector<std::vector<int>> &grid); //69
+    
+    int lengthOfLastWord58(std::string s); //70
 };
 #endif /* Solution_hpp */
